@@ -1,0 +1,13 @@
+/* src/input.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-light-bg text-light-text-primary;
+    @apply dark:bg-dark-bg dark:text-dark-text-primary;
+    @apply transition-colors duration-300 ease-in-out; /* Smooth theme transition */
+  }
+}
+
