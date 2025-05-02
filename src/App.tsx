@@ -47,11 +47,11 @@ function App() {
       {!isLoading && !error && (
         <>
           <div className="reading">
-            <h2>Temperature</h2>
+            <h2>Temperatura</h2>
             <p>{sensorData.temp.toFixed(1)} °C</p>
           </div>
           <div className="reading">
-            <h2>Humidity</h2>
+            <h2>Humedad</h2>
             <p>{sensorData.humidity.toFixed(1)} %</p>
           </div>
         </>
