@@ -28,8 +28,8 @@ void loop() {
   // put your main code here, to run repeatedly:
   float humedad = dht.readHumidity();
   float temperatura = dht.readTemperature();
-  char* hum = (char*)malloc(15 * sizeof(char));
-  char* temp = (char*)malloc(15 * sizeof(char));
+  char hum [32];
+  char temp = [32];
   sprintf(hum, "%.2f%%", humedad);
   sprintf(temp, "%.2fC", temperatura);
   lcd.setCursor(0, 0);
