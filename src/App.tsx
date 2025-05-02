@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import * as HI from "heat-index";
 interface SensorData {
   temp: number;
   humidity: number;
@@ -42,7 +42,7 @@ function App() {
 
   return (
     <div id="sensor-data-container">
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <p>Cargando...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {!isLoading && !error && (
         <>
@@ -53,6 +53,10 @@ function App() {
           <div className="reading">
             <h2>Humedad</h2>
             <p>{sensorData.humidity.toFixed(1)} %</p>
+          </div>
+          <div className="reading">
+            <h2>Sensación</h2>
+            <p>{HI.heatIndex({ temperature: sensorData.temp, humidity: sensorData.humidity }).toFixed(1)} °C</p>
           </div>
         </>
       )}

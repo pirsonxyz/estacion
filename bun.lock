@@ -4,6 +4,7 @@
     "": {
       "name": "estacion",
       "dependencies": {
+        "heat-index": "^0.0.3",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
       },
@@ -63,6 +64,8 @@
     "get-caller-file": ["get-caller-file@2.0.5", "", {}, "sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg=="],
 
     "has-flag": ["has-flag@4.0.0", "", {}, "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ=="],
+
+    "heat-index": ["heat-index@0.0.3", "", {}, "sha512-yPNcTmVuwZx5hgdgIG1SHnvLn76PcpkpH6Fo35BnBd9zynva+fBovmkRMAaH9qx0jOuVyhlujLXNxaNAF169pw=="],
 
     "is-fullwidth-code-point": ["is-fullwidth-code-point@3.0.0", "", {}, "sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg=="],
 
