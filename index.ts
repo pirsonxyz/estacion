@@ -6,7 +6,6 @@ const corsHeaders = {
   "Access-Control-Allow-Origin": allowedOrigin,
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
-
 };
 
 let latestSensorData = {
@@ -26,9 +25,7 @@ export default {
     const method = request.method;
     console.log(`Request: ${method} ${pathname}`);
 
-
     if (method === "OPTIONS") {
-
       console.log("Handling OPTIONS preflight request");
       return new Response(null, {
         status: 204, // No Content
@@ -36,14 +33,15 @@ export default {
       });
     }
 
-
     let response: Response;
 
     // API route for updating data
     if (pathname === "/api/sensor-update" && method === "POST") {
       try {
         const data = await request.json();
-        if (typeof data.temp === "number" && typeof data.humidity === "number") {
+        if (
+          typeof data.temp === "number" && typeof data.humidity === "number"
+        ) {
           latestSensorData = {
             temp: data.temp,
             humidity: data.humidity,
@@ -51,31 +49,38 @@ export default {
           };
           console.log("Updated sensor data:", latestSensorData);
           // Create base response without CORS headers yet
-          response = new Response(JSON.stringify({ success: true, data: latestSensorData }), {
-            headers: { "Content-Type": "application/json" },
-          });
+          response = new Response(
+            JSON.stringify({ success: true, data: latestSensorData }),
+            {
+              headers: { "Content-Type": "application/json" },
+            },
+          );
         } else {
-          response = new Response(JSON.stringify({ success: false, error: "Invalid data format" }), {
-            status: 400,
-            headers: { "Content-Type": "application/json" },
-          });
+          response = new Response(
+            JSON.stringify({ success: false, error: "Invalid data format" }),
+            {
+              status: 400,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
         }
       } catch (error) {
-        response = new Response(JSON.stringify({ success: false, error: "Invalid JSON" }), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        });
+        response = new Response(
+          JSON.stringify({ success: false, error: "Invalid JSON" }),
+          {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
       }
-    }
-    // API route to get the latest data
+    } // API route to get the latest data
     else if (pathname === "/api/latest" && method === "GET") {
       console.log("Handling GET /api/latest");
       // Create base response without CORS headers yet
       response = new Response(JSON.stringify(latestSensorData), {
         headers: { "Content-Type": "application/json" },
       });
-    }
-    // Serve index.html for the root path
+    } // Serve index.html for the root path
     else if (pathname === "/" && method === "GET") {
       const htmlPath = path.join(import.meta.dir, "index.html");
       console.log(`Serving HTML: ${htmlPath}`);
@@ -84,28 +89,29 @@ export default {
         response = new Response(file); // Bun sets Content-Type
       } else {
         console.error(`HTML file not found at: ${htmlPath}`);
-        response = new Response("Not Found: index.html missing", { status: 404 });
+        response = new Response("Not Found: index.html missing", {
+          status: 404,
+        });
       }
-    }
-
-
-    else if (pathname === "/dist/index.js" && method === "GET") {
+    } else if (pathname === "/dist/index.js" && method === "GET") {
       const buildPath = path.join(import.meta.dir, "dist", "index.js");
       console.log(`Serving JS: ${buildPath}`);
       const file = Bun.file(buildPath);
       if (await file.exists()) {
-        response = new Response(file, { headers: { "Content-Type": "application/javascript" } });
+        response = new Response(file, {
+          headers: { "Content-Type": "application/javascript" },
+        });
       } else {
         console.error(`JS bundle not found at: ${buildPath}`);
-        response = new Response("Not Found: bundle.js missing", { status: 404 });
+        response = new Response("Not Found: bundle.js missing", {
+          status: 404,
+        });
       }
-    }
-    // Fallback for other requests
+    } // Fallback for other requests
     else {
       console.log(`Path not handled: ${pathname}`);
       response = new Response("Not Found", { status: 404 });
     }
-
 
     const finalHeaders = new Headers(response.headers);
     Object.entries(corsHeaders).forEach(([key, value]) => {
@@ -117,7 +123,6 @@ export default {
       statusText: response.statusText,
       headers: finalHeaders,
     });
-
   },
   error(error) {
     console.error("Server Error:", error);
@@ -125,10 +130,13 @@ export default {
     Object.entries(corsHeaders).forEach(([key, value]) => {
       errorHeaders.set(key, value);
     });
-    return new Response("Internal Server Error", { status: 500, headers: errorHeaders });
-  }
+    return new Response("Internal Server Error", {
+      status: 500,
+      headers: errorHeaders,
+    });
+  },
 } satisfies Serve;
 
-
-console.log(`Bun server configured with CORS origin: ${allowedOrigin}. Listening on http://0.0.0.0:3000`);
-
+console.log(
+  `Bun server configured with CORS origin: ${allowedOrigin}. Listening on http://0.0.0.0:3000`,
+);

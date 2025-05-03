@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 import * as HI from "heat-index";
 interface SensorData {
   temp: number;
@@ -7,7 +7,10 @@ interface SensorData {
 }
 
 function App() {
-  const [sensorData, setSensorData] = useState<SensorData>({ temp: 0.0, humidity: 0.0 });
+  const [sensorData, setSensorData] = useState<SensorData>({
+    temp: 0.0,
+    humidity: 0.0,
+  });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -16,7 +19,7 @@ function App() {
     const fetchData = async () => {
       try {
         setError(null); // Clear previous errors
-        const response = await fetch('/api/latest');
+        const response = await fetch("/api/latest");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -30,12 +33,9 @@ function App() {
       }
     };
 
-
     fetchData();
 
-
     const intervalId = setInterval(fetchData, 5000);
-
 
     return () => clearInterval(intervalId);
   }, []);
@@ -43,7 +43,7 @@ function App() {
   return (
     <div id="sensor-data-container">
       {isLoading && <p>Cargando...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       {!isLoading && !error && (
         <>
           <div className="reading">
@@ -56,7 +56,12 @@ function App() {
           </div>
           <div className="reading">
             <h2>Sensación</h2>
-            <p>{HI.heatIndex({ temperature: sensorData.temp, humidity: sensorData.humidity }).toFixed(1)} °C</p>
+            <p>
+              {HI.heatIndex({
+                temperature: sensorData.temp,
+                humidity: sensorData.humidity,
+              }).toFixed(1)} °C
+            </p>
           </div>
         </>
       )}
@@ -65,4 +70,3 @@ function App() {
 }
 
 export default App;
-
