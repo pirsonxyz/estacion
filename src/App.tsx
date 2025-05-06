@@ -30,7 +30,6 @@ function App() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data: SensorData = await response.json();
-        console.log(data);
         setSensorData(data);
       } catch (e: any) {
         console.error("Failed to fetch sensor data:", e);
