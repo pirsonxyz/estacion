@@ -72,15 +72,15 @@ function App() {
           </div>
           <div className="reading">
             <h2>LPG</h2>
-            <p>{sensorData.lpg.toFixed(1)} ppm</p>
+            <p>{sensorData.lpg} ppm</p>
           </div>
           <div className="reading">
             <h2>CO</h2>
-            <p>{sensorData.co.toFixed(1)} ppm</p>
+            <p>{sensorData.co} ppm</p>
           </div>
           <div className="reading">
             <h2>Humo</h2>
-            <p>{sensorData.smoke.toFixed(1)} ppm</p>
+            <p>{sensorData.smoke} ppm</p>
           </div>
         </>
       )}
