@@ -77,6 +77,7 @@ export default {
 
       try {
         const data = await request.json();
+        console.log(data);
         if (
           typeof data.temp === "number" && typeof data.humidity === "number" && typeof data.lpg === "number" && typeof data.co === "number" && data.smoke === "number"
         ) {
