@@ -1,5 +1,22 @@
 import { type Serve } from "bun";
 import path from "path";
+import { createClient } from "@libsql/client";
+import type { Client } from "@libsql/client";
+
+function create_con(): Client | undefined {
+  const url = process.env.TURSO_DATABASE_URL;
+  const token = process.env.TURSO_AUTH_TOKEN;
+  if (url && token) {
+    const con = createClient({
+      url: url,
+      authToken: token,
+    });
+
+    con.execute("create table if not exists readings (temp REAL, hum REAL, update_at datetime default current_timestamp)");
+    return con;
+  }
+  return undefined;
+}
 
 const allowedOrigin = "*";
 const corsHeaders = {
@@ -7,11 +24,13 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
+const con = create_con();
+const data = await con?.execute("SELECT temp, hum, update_at FROM readings ORDER BY update_at DESC LIMIT 1");
+const rows = data?.rows;
 
 let latestSensorData = {
-  temp: 0.0,
-  humidity: 0.0,
-  lastUpdated: new Date(),
+  temp: parseFloat(rows?.[0]["0"]),
+  humidity: parseFloat(rows?.[0]["1"]),
 };
 
 console.log("Starting Bun server...");
@@ -35,8 +54,10 @@ export default {
 
     let response: Response;
 
-    // API route for updating data
+    // API route for updating data and sending to db
     if (pathname === "/api/sensor-update" && method === "POST") {
+      const con = create_con();
+
       try {
         const data = await request.json();
         if (
@@ -45,8 +66,11 @@ export default {
           latestSensorData = {
             temp: data.temp,
             humidity: data.humidity,
-            lastUpdated: new Date(),
           };
+          if (con) {
+            con.execute({ sql: "insert into readings (temp, hum)  values(?, ?)", args: [latestSensorData.temp, latestSensorData.humidity] });
+          }
+
           console.log("Updated sensor data:", latestSensorData);
           // Create base response without CORS headers yet
           response = new Response(

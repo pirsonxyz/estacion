@@ -19,6 +19,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@libsql/client": "^0.15.4",
     "heat-index": "^0.0.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

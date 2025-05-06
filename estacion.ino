@@ -46,8 +46,6 @@ void loop() {
   int code = client.POST(data);
   Serial.print(code);
   client.end();
-  delay(5000);
-  free(hum);
-  free(temp);
+  delay(180000);
   lcd.clear();
 }
