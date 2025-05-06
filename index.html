@@ -1,83 +1,102 @@
 <!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link
-      href="https://fonts.googleapis.com/css?family=JetBrains Mono"
-      rel="stylesheet"
-    >
-    <title>Estación Meteorológica SJT</title>
-    <style>
-      body {
-        font-family:
-          "JetBrains Mono",
-          monospace; /* Added monospace fallback */
-        padding: 20px;
-        font-weight: 400;
-      }
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=JetBrains Mono" rel="stylesheet">
+  <title>Estación Meteorológica SJT</title>
+  <style>
+    body {
+      font-family:
+        "JetBrains Mono",
+        monospace;
+      /* Added monospace fallback */
+      padding: 20px;
+      font-weight: 400;
+    }
+
+    #sensor-data-container {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      /* Allow items to wrap onto the next line if needed */
+    }
+
+    .reading {
+      background: #f0f0f0;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      flex: 1 1 150px;
+      /* Allow items to grow and shrink, with a base size */
+      min-width: 150px;
+      /* Ensure items don't get too small */
+    }
+
+    .reading h3 {
+      /* Use a heading for the sensor name for better semantics */
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1em;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .reading p {
+      font-size: 2em;
+      font-weight: 500;
+      margin: 0;
+      /* Remove default paragraph margin */
+      line-height: 1.1;
+    }
+
+    /* ---- Responsive ---- */
+    /* For screens smaller than 600px */
+    @media (max-width: 600px) {
       #sensor-data-container {
-        display: flex;
-        gap: 20px;
-        margin-top: 20px;
-        flex-wrap: wrap; /* Allow items to wrap onto the next line if needed */
+        flex-direction: row;
+        /* Keep horizontal layout instead of stacking */
+        align-items: center;
+        /* Center items vertically */
+        justify-content: space-between;
+        /* Space items evenly */
+        flex-wrap: wrap;
+        /* Allow wrapping if needed */
       }
 
       .reading {
-        background: #f0f0f0;
-        padding: 15px;
-        border-radius: 8px;
-        text-align: center;
-        flex: 1 1
-          150px; /* Allow items to grow and shrink, with a base size */
-        min-width: 150px; /* Ensure items don't get too small */
+        /* Keep items side by side, but with smaller proportions */
+        flex: 0 1 auto;
+        /* Don't grow, can shrink, base size on content */
+        margin-right: 10px;
+        /* Add spacing between items */
+        margin-bottom: 10px;
+        /* Space if they wrap */
       }
 
-      .reading h3 {
-        /* Use a heading for the sensor name for better semantics */
-        margin-top: 0;
-        margin-bottom: 10px;
-        font-size: 1em;
-        font-weight: 500;
-        color: #555;
+      .reading:last-child {
+        margin-right: 0;
+        /* Remove right margin from the last item */
       }
 
       .reading p {
-        font-size: 2em;
-        font-weight: 500;
-        margin: 0; /* Remove default paragraph margin */
-        line-height: 1.1;
+        font-size: 1.5em;
+        /* Slightly smaller font on small screens */
+        white-space: nowrap;
+        /* Prevent text wrapping */
       }
+    }
+    }
+  </style>
+</head>
 
-      /* --- Responsive --- */
-      /* For screens smaller than 600px */
-      @media (max-width: 600px) {
-        #sensor-data-container {
-          flex-direction: column; /* Stack items vertically */
-          align-items: stretch; /* Make items take full width */
-        }
+<body>
+  <h1>Estación Meteorológica SJT (ESP32 + DHT11)</h1>
+  <div id="root"></div>
+  <script src="/dist/index.js"></script>
+</body>
 
-        .reading {
-          /* Adjust flex properties for vertical layout if needed,
-             but flex: 1 1 150px might still work okay */
-          margin-bottom: 15px; /* Add space between stacked items */
-        }
-
-        .reading:last-child {
-          margin-bottom: 0; /* Remove margin from the last item */
-        }
-
-        .reading p {
-          font-size: 1.8em; /* Slightly smaller font on small screens */
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Estación Meteorológica SJT (ESP32 + DHT11)</h1>
-    <div id="root"></div>
-    <script src="/dist/index.js"></script>
-  </body>
 </html>
