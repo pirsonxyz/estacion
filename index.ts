@@ -32,6 +32,7 @@ let latestSensorData = {
   smoke: 0.0,
 };
 const con = await create_con();
+console.log(con);
 const data = await con?.execute("SELECT temp, hum, lpg, co, smoke, update_at FROM readings ORDER BY update_at DESC LIMIT 1");
 const rows = data?.rows;
 if (rows && rows[0] && rows[0]["0"] && rows[0]["1"] && rows[0]["2"] && rows[0]["3"] && rows[0]["4"]) {
@@ -74,6 +75,7 @@ export default {
     // API route for updating data and sending to db
     if (pathname === "/api/sensor-update" && method === "POST") {
       const con = await create_con();
+      console.log(con);
 
       try {
         const data = await request.json();
@@ -88,9 +90,9 @@ export default {
             co: data.co,
             smoke: data.smoke
           };
-          if (con) {
-            await con.execute({ sql: "insert into readings (temp, hum, lpg, co, smoke)  values(?, ?, ?, ?,?)", args: [latestSensorData.temp, latestSensorData.humidity, latestSensorData.lpg, latestSensorData.co, latestSensorData.smoke] });
-          }
+
+          await con?.execute({ sql: "insert into readings (temp, hum, lpg, co, smoke)  values(?, ?, ?, ?, ?)", args: [latestSensorData.temp, latestSensorData.humidity, latestSensorData.lpg, latestSensorData.co, latestSensorData.smoke] });
+
 
           console.log("Updated sensor data:", latestSensorData);
           // Create base response without CORS headers yet
