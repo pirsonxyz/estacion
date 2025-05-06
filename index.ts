@@ -24,26 +24,23 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
+let latestSensorData = {
+  temp: 0.0,
+  humidity: 0.0,
+};
 const con = create_con();
 const data = await con?.execute("SELECT temp, hum, update_at FROM readings ORDER BY update_at DESC LIMIT 1");
 const rows = data?.rows;
-if (rows) {
-  const temp = rows[0]["0"]?.toString()
-  const humidity = rows[0]["1"]?.toString();
+if (rows && rows[0] && rows[0]["0"] && rows[0]["1"]) {
+  const temp = rows[0]["0"].toString()
+  const humidity = rows[0]["1"].toString();
   if (temp && humidity) {
-    let latestSensorData = {
+    latestSensorData = {
       temp: parseFloat(temp),
       humidity: parseFloat(humidity),
     };
   }
-} else {
-  let latestSensorData = {
-    temp: 0.0,
-    humidity: 0.0,
-  };
 }
-
-
 console.log("Starting Bun server...");
 
 export default {
