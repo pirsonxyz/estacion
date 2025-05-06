@@ -11,7 +11,7 @@ const corsHeaders = {
 let latestSensorData = {
   temp: 0.0,
   humidity: 0.0,
-  lastUpdated: new Date().toLocaleTimeString(),
+  lastUpdated: new Date(),
 };
 
 console.log("Starting Bun server...");
@@ -45,7 +45,7 @@ export default {
           latestSensorData = {
             temp: data.temp,
             humidity: data.humidity,
-            lastUpdated: new Date().toLocaleTimeString(),
+            lastUpdated: new Date(),
           };
           console.log("Updated sensor data:", latestSensorData);
           // Create base response without CORS headers yet
