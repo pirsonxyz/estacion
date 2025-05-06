@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import * as HI from "heat-index";
 
 interface SensorData {
-  temp: number;
-  humidity: number;
-  lpg: number;
-  co: number;
-  smoke: number;
+  temp: number,
+  humidity: number,
+  lpg: number,
+  co: number,
+  smoke: number,
 }
 
 function App() {
@@ -30,6 +30,7 @@ function App() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data: SensorData = await response.json();
+        console.log(data);
         setSensorData(data);
       } catch (e: any) {
         console.error("Failed to fetch sensor data:", e);
