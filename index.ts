@@ -81,7 +81,7 @@ export default {
         const data = await request.json();
         console.log(data);
         if (
-          typeof data.temp === "number" && typeof data.humidity === "number" && typeof data.lpg === "number" && typeof data.co === "number" && data.smoke === "number"
+          typeof data.temp === "number" && typeof data.humidity === "number" && typeof data.lpg === "number" && typeof data.co === "number" && typeof data.smoke === "number"
         ) {
           latestSensorData = {
             temp: data.temp,
