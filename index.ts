@@ -3,7 +3,7 @@ import path from "path";
 import { createClient } from "@libsql/client";
 import type { Client } from "@libsql/client";
 
-function create_con(): Client | undefined {
+async function create_con(): Promise<Client | undefined> {
   const url = process.env.TURSO_DATABASE_URL;
   const token = process.env.TURSO_AUTH_TOKEN;
   if (url && token) {
@@ -12,7 +12,7 @@ function create_con(): Client | undefined {
       authToken: token,
     });
 
-    con.execute("create table if not exists readings (temp REAL, hum REAL, lpg REAL, co REAL, smoke REAL, update_at datetime default current_timestamp)");
+    await con.execute("create table if not exists readings (temp REAL, hum REAL,lpg REAL,co REAL,smoke REAL, update_at datetime default current_timestamp)");
     return con;
   }
   return undefined;
@@ -31,7 +31,7 @@ let latestSensorData = {
   co: 0.0,
   smoke: 0.0,
 };
-const con = create_con();
+const con = await create_con();
 const data = await con?.execute("SELECT temp, hum, lpg, co, smoke, update_at FROM readings ORDER BY update_at DESC LIMIT 1");
 const rows = data?.rows;
 if (rows && rows[0] && rows[0]["0"] && rows[0]["1"] && rows[0]["2"] && rows[0]["3"] && rows[0]["4"]) {
@@ -73,7 +73,7 @@ export default {
 
     // API route for updating data and sending to db
     if (pathname === "/api/sensor-update" && method === "POST") {
-      const con = create_con();
+      const con = await create_con();
 
       try {
         const data = await request.json();
@@ -88,7 +88,7 @@ export default {
             smoke: data.smoke
           };
           if (con) {
-            con.execute({ sql: "insert into readings (temp, hum, lpg, co, smoke)  values(?, ?)", args: [latestSensorData.temp, latestSensorData.humidity, latestSensorData.lpg, latestSensorData.co, latestSensorData.smoke] });
+            await con.execute({ sql: "insert into readings (temp, hum, lpg, co, smoke)  values(?, ?, ?, ?,?)", args: [latestSensorData.temp, latestSensorData.humidity, latestSensorData.lpg, latestSensorData.co, latestSensorData.smoke] });
           }
 
           console.log("Updated sensor data:", latestSensorData);

@@ -69,6 +69,18 @@ function App() {
               }).toFixed(1)} °C
             </p>
           </div>
+          <div className="reading">
+            <h2>LPG</h2>
+            <p>{sensorData.lpg.toFixed(1)} ppm</p>
+          </div>
+          <div className="reading">
+            <h2>CO</h2>
+            <p>{sensorData.co.toFixed(1)} ppm</p>
+          </div>
+          <div className="reading">
+            <h2>Humo</h2>
+            <p>{sensorData.smoke.toFixed(1)} ppm</p>
+          </div>
         </>
       )}
     </div>
