@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import * as HI from "heat-index";
+
 interface SensorData {
   temp: number;
   humidity: number;
-  lastUpdated?: string | Date; // Optional last updated time
+  lpg: number;
+  co: number;
+  smoke: number;
 }
 
 function App() {
   const [sensorData, setSensorData] = useState<SensorData>({
     temp: 0.0,
     humidity: 0.0,
+    lpg: 0.0,
+    co: 0.0,
+    smoke: 0.0
   });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);

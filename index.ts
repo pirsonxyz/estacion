@@ -12,7 +12,7 @@ function create_con(): Client | undefined {
       authToken: token,
     });
 
-    con.execute("create table if not exists readings (temp REAL, hum REAL, update_at datetime default current_timestamp)");
+    con.execute("create table if not exists readings (temp REAL, hum REAL, lpg REAL, co REAL, smoke REAL, update_at datetime default current_timestamp)");
     return con;
   }
   return undefined;
@@ -27,17 +27,26 @@ const corsHeaders = {
 let latestSensorData = {
   temp: 0.0,
   humidity: 0.0,
+  lpg: 0.0,
+  co: 0.0,
+  smoke: 0.0,
 };
 const con = create_con();
-const data = await con?.execute("SELECT temp, hum, update_at FROM readings ORDER BY update_at DESC LIMIT 1");
+const data = await con?.execute("SELECT temp, hum, lpg, co, smoke, update_at FROM readings ORDER BY update_at DESC LIMIT 1");
 const rows = data?.rows;
-if (rows && rows[0] && rows[0]["0"] && rows[0]["1"]) {
+if (rows && rows[0] && rows[0]["0"] && rows[0]["1"] && rows[0]["2"] && rows[0]["3"] && rows[0]["4"]) {
   const temp = rows[0]["0"].toString()
   const humidity = rows[0]["1"].toString();
+  const lpg = rows[0]["2"].toString();
+  const co = rows[0]["3"].toString();
+  const smoke = rows[0]["4"].toString();
   if (temp && humidity) {
     latestSensorData = {
       temp: parseFloat(temp),
       humidity: parseFloat(humidity),
+      lpg: parseFloat(lpg),
+      co: parseFloat(co),
+      smoke: parseFloat(smoke),
     };
   }
 }
@@ -69,14 +78,17 @@ export default {
       try {
         const data = await request.json();
         if (
-          typeof data.temp === "number" && typeof data.humidity === "number"
+          typeof data.temp === "number" && typeof data.humidity === "number" && typeof data.lpg === "number" && typeof data.co === "number" && data.smoke === "number"
         ) {
           latestSensorData = {
             temp: data.temp,
             humidity: data.humidity,
+            lpg: data.lpg,
+            co: data.co,
+            smoke: data.smoke
           };
           if (con) {
-            con.execute({ sql: "insert into readings (temp, hum)  values(?, ?)", args: [latestSensorData.temp, latestSensorData.humidity] });
+            con.execute({ sql: "insert into readings (temp, hum, lpg, co, smoke)  values(?, ?)", args: [latestSensorData.temp, latestSensorData.humidity, latestSensorData.lpg, latestSensorData.co, latestSensorData.smoke] });
           }
 
           console.log("Updated sensor data:", latestSensorData);
