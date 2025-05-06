@@ -27,11 +27,22 @@ const corsHeaders = {
 const con = create_con();
 const data = await con?.execute("SELECT temp, hum, update_at FROM readings ORDER BY update_at DESC LIMIT 1");
 const rows = data?.rows;
+if (rows) {
+  const temp = rows[0]["0"]?.toString()
+  const humidity = rows[0]["1"]?.toString();
+  if (temp && humidity) {
+    let latestSensorData = {
+      temp: parseFloat(temp),
+      humidity: parseFloat(humidity),
+    };
+  }
+} else {
+  let latestSensorData = {
+    temp: 0.0,
+    humidity: 0.0,
+  };
+}
 
-let latestSensorData = {
-  temp: parseFloat(rows?.[0]["0"]),
-  humidity: parseFloat(rows?.[0]["1"]),
-};
 
 console.log("Starting Bun server...");
 
