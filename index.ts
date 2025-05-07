@@ -89,6 +89,7 @@ export default {
         console.log(data);
         if (
           typeof data.temp === "number" && typeof data.humidity === "number" && typeof data.lpg === "number" && typeof data.co === "number" && typeof data.smoke === "number" && typeof data.pressure === "number" && typeof data.alt === "number"
+
         ) {
           latestSensorData = {
             temp: data.temp,
@@ -99,7 +100,7 @@ export default {
             pressure: data.pressure,
             alt: data.alt,
           };
-
+          console.log("going to update now");
           await con?.execute({ sql: "insert into readings (temp, hum, lpg, co, smoke, pressure, alt)  values(?, ?, ?, ?, ?, ?, ?)", args: [latestSensorData.temp, latestSensorData.humidity, latestSensorData.lpg, latestSensorData.co, latestSensorData.smoke, latestSensorData.pressure, latestSensorData.alt] });
 
 
