@@ -3,11 +3,13 @@ import * as HI from "heat-index";
 import SensorCard from "./SensorCard.tsx";
 
 interface SensorData {
-  temp: number;
-  humidity: number;
-  lpg: number;
-  co: number;
-  smoke: number;
+  temp: number,
+  humidity: number,
+  lpg: number,
+  co: number,
+  smoke: number,
+  pressure: number,
+  alt: number,
 }
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
     lpg: 0.0,
     co: 0.0,
     smoke: 0.0,
+    pressure: 0.0,
+    alt: 0.0,
   });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true); // Initial load
@@ -190,6 +194,20 @@ function App() {
               unit="ppm"
               isRefreshing={isRefreshing}
             />
+            <SensorCard
+              iconClass="fa-solid fa-dumbbell"
+              title="Presión Atmosférica"
+              value={sensorData.pressure}
+              unit="hPa"
+              isRefreshing={isRefreshing}
+            ></SensorCard>
+            <SensorCard
+              iconClass="fa-solid fa-up-long"
+              title="Altitud"
+              value={sensorData.alt}
+              unit="m"
+              isRefreshing={isRefreshing}
+            ></SensorCard>
           </>
         )}
       </div>

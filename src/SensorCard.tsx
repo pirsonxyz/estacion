@@ -1,4 +1,3 @@
-// SensorCard.tsx (or at the top of App.tsx)
 import React, { useEffect, useState, useRef } from "react";
 interface SensorCardProps {
   iconClass: string;
