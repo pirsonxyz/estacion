@@ -110,7 +110,7 @@ function App() {
           {lastUpdated && (
             <div className="last-updated">
               <i className={`fas fa-sync ${isRefreshing ? "fa-spin" : ""}`}></i>
-              <span>Última vez actualizado: {lastUpdated}</span>
+              <span>Última vez actualizada: {lastUpdated}</span>
             </div>
           )}
 
@@ -182,7 +182,7 @@ function App() {
             ></SensorCard>
             <SensorCard
               iconClass="fa-solid fa-up-long"
-              title="Altitud sobre el nivel del mar"
+              title="Altura sobre el nivel del mar"
               value={sensorData.alt}
               unit="m"
               isRefreshing={isRefreshing}
