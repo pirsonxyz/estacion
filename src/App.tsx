@@ -75,7 +75,7 @@ function App() {
         setLastUpdated(formatTime());
       } catch (e: any) {
         console.error("Failed to fetch sensor data:", e);
-        setError(`Failed to load data: ${e.message}`);
+        setError(`No se pudo cargar la data: ${e.message}`);
       } finally {
         setIsLoading(false);
         setIsRefreshing(false);
