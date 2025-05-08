@@ -12,7 +12,7 @@ async function create_con(): Promise<Client | undefined> {
       authToken: token,
     });
 
-    await con.execute("create table if not exists readings (temp REAL, hum REAL,lpg REAL,co REAL,smoke REAL, pressure REAL, alt REAL, update_at datetime default current_timestamp)");
+    await con.execute("create table if not exists readings (temp real, hum real,lpg real,co real,smoke real, pressure real, alt real, update_at datetime default current_timestamp)");
     return con;
   }
   return undefined;
@@ -35,9 +35,10 @@ let latestSensorData = {
   pressure: 0.0,
   alt: 0.0
 };
+
 const con = await create_con();
 console.log(con);
-const data = await con?.execute("SELECT temp, hum, lpg, co, smoke, pressure, alt ,update_at FROM readings ORDER BY update_at DESC LIMIT 1");
+const data = await con?.execute("select temp, hum, lpg, co, smoke, pressure, alt ,update_at from readings order by update_at desc limit 1");
 const rows = data?.rows;
 if (rows && rows[0] && rows[0]["0"] && rows[0]["1"] && rows[0]["2"] && rows[0]["3"] && rows[0]["4"] && rows[0]["5"] && rows[0]["6"]) {
   const temp = rows[0]["0"].toString()
@@ -60,6 +61,7 @@ if (rows && rows[0] && rows[0]["0"] && rows[0]["1"] && rows[0]["2"] && rows[0]["
     };
   }
 }
+
 console.log("Starting Bun server...");
 
 export default {
@@ -81,9 +83,9 @@ export default {
 
     let response: Response;
 
-    // API route for updating data and sending to db
+
     if (pathname === "/api/sensor-update" && method === "POST") {
-      // --- Authorization Check ---
+
       if (!UPLOAD_SECRET_TOKEN) {
         console.error(
           "UPLOAD_SECRET_TOKEN is not configured on the server. Denying request.",
@@ -133,9 +135,15 @@ export default {
       try {
         const data = await request.json();
         if (
-          typeof data.temp === "number" && typeof data.humidity === "number" && typeof data.lpg === "number" && typeof data.co === "number" && typeof data.smoke === "number" && typeof data.pressure === "number" && typeof data.alt === "number"
-
+          typeof data.temp === "number" &&
+          typeof data.humidity === "number" &&
+          typeof data.lpg === "number" &&
+          typeof data.co === "number" &&
+          typeof data.smoke === "number" &&
+          typeof data.pressure === "number" &&
+          typeof data.alt === "number"
         ) {
+
           latestSensorData = {
             temp: data.temp,
             humidity: data.humidity,
@@ -149,7 +157,6 @@ export default {
 
 
           console.log("Updated sensor data:", latestSensorData);
-          // Create base response without CORS headers yet
           response = new Response(
             JSON.stringify({ success: true, data: latestSensorData }),
             {
@@ -174,20 +181,19 @@ export default {
           },
         );
       }
-    } // API route to get the latest data
+    }
     else if (pathname === "/api/latest" && method === "GET") {
       console.log("Handling GET /api/latest");
-      // Create base response without CORS headers yet
       response = new Response(JSON.stringify(latestSensorData), {
         headers: { "Content-Type": "application/json" },
       });
-    } // Serve index.html for the root path
+    }
     else if (pathname === "/" && method === "GET") {
       const htmlPath = path.join(import.meta.dir, "index.html");
       console.log(`Serving HTML: ${htmlPath}`);
       const file = Bun.file(htmlPath);
       if (await file.exists()) {
-        response = new Response(file); // Bun sets Content-Type
+        response = new Response(file);
       } else {
         console.error(`HTML file not found at: ${htmlPath}`);
         response = new Response("Not Found: index.html missing", {
@@ -208,7 +214,7 @@ export default {
           status: 404,
         });
       }
-    } // Fallback for other requests
+    }
     else {
       console.log(`Path not handled: ${pathname}`);
       response = new Response("Not Found", { status: 404 });

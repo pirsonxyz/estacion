@@ -39,5 +39,4 @@ const SensorCard: React.FC<SensorCardProps> = ({
   );
 };
 
-// If in a separate file, export it:
 export default SensorCard;
