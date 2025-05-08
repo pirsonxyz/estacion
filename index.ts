@@ -24,6 +24,8 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
+
+const UPLOAD_SECRET_TOKEN = process.env.UPLOAD_SECRET_TOKEN;
 let latestSensorData = {
   temp: 0.0,
   humidity: 0.0,
@@ -81,6 +83,51 @@ export default {
 
     // API route for updating data and sending to db
     if (pathname === "/api/sensor-update" && method === "POST") {
+      // --- Authorization Check ---
+      if (!UPLOAD_SECRET_TOKEN) {
+        console.error(
+          "UPLOAD_SECRET_TOKEN is not configured on the server. Denying request.",
+        );
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: "Server configuration error: Missing upload token.",
+          }),
+          {
+            status: 500, // Internal Server Error
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+
+      const authHeader = request.headers.get("Authorization");
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        console.warn("Missing or malformed Authorization header");
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: "Unauthorized: Missing or malformed token",
+          }),
+          {
+            status: 401,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+
+      const token = authHeader.substring(7); // Remove "Bearer "
+      if (token !== UPLOAD_SECRET_TOKEN) {
+        console.warn("Invalid token received");
+        return new Response(
+          JSON.stringify({ success: false, error: "Forbidden: Invalid token" }),
+          {
+            status: 403,
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+      }
+      console.log("Authorization successful for /api/sensor-update.");
+
       const con = await create_con();
       console.log(con);
 
