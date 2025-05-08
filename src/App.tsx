@@ -174,27 +174,6 @@ function App() {
               isRefreshing={isRefreshing}
             />
             <SensorCard
-              iconClass="fas fa-fire-alt"
-              title="GLP"
-              value={sensorData.lpg}
-              unit="ppm"
-              isRefreshing={isRefreshing}
-            />
-            <SensorCard
-              iconClass="fas fa-smog"
-              title="CO"
-              value={sensorData.co}
-              unit="ppm"
-              isRefreshing={isRefreshing}
-            />
-            <SensorCard
-              iconClass="fas fa-industry"
-              title="Humo"
-              value={sensorData.smoke}
-              unit="ppm"
-              isRefreshing={isRefreshing}
-            />
-            <SensorCard
               iconClass="fa-solid fa-dumbbell"
               title="Presión Atmosférica"
               value={sensorData.pressure}
@@ -203,7 +182,7 @@ function App() {
             ></SensorCard>
             <SensorCard
               iconClass="fa-solid fa-up-long"
-              title="Altitud"
+              title="Altitud sobre el nivel del mar"
               value={sensorData.alt}
               unit="m"
               isRefreshing={isRefreshing}
