@@ -12,7 +12,7 @@ async function create_con(): Promise<Client | undefined> {
       authToken: token,
     });
 
-    await con.execute("create table if not exists readings (temp real, hum real,lpg real,co real,smoke real, pressure real, alt real, update_at datetime default current_timestamp)");
+    await con.execute("create table if not exists readings (temp real, hum real,lpg real,co real,smoke real, pressure real, alt real, readed_at datetime default current_timestamp)");
     return con;
   }
   return undefined;
@@ -38,7 +38,7 @@ let latestSensorData = {
 
 const con = await create_con();
 console.log(con);
-const data = await con?.execute("select temp, hum, lpg, co, smoke, pressure, alt ,update_at from readings order by update_at desc limit 1");
+const data = await con?.execute("select temp, hum, lpg, co, smoke, pressure, alt ,readed_at from readings order by readed_at desc limit 1");
 const rows = data?.rows;
 if (rows && rows[0] && rows[0]["0"] && rows[0]["1"] && rows[0]["2"] && rows[0]["3"] && rows[0]["4"] && rows[0]["5"] && rows[0]["6"]) {
   const temp = rows[0]["0"].toString()
