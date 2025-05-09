@@ -76,7 +76,7 @@ export default {
     let response: Response;
 
     if (pathname === "/favicon.ico" && method === "GET") {
-      const icon = Bun.file("public/favicon.ico");
+      const icon = Bun.file("favicon.ico");
       if (!await icon.exists()) {
         console.warn("Icon file in public/favicon.ico not found!");
         return new Response("Favicon not found", { status: 404 });
