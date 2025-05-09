@@ -12,7 +12,7 @@ async function create_con(): Promise<Client | undefined> {
       authToken: token,
     });
 
-    await con.execute("create table if not exists readings (temp real, hum real,lpg real,co real,smoke real, pressure real, alt real, readed_at datetime default current_timestamp)");
+    await con.execute("create table if not exists readings (temp real, hum real, pressure real, alt real, readed_at datetime default current_timestamp)");
     return con;
   }
   return undefined;
@@ -29,33 +29,25 @@ const UPLOAD_SECRET_TOKEN = process.env.UPLOAD_SECRET_TOKEN;
 let latestSensorData = {
   temp: 0.0,
   humidity: 0.0,
-  lpg: 0.0,
-  co: 0.0,
-  smoke: 0.0,
   pressure: 0.0,
   alt: 0.0
 };
 
 const con = await create_con();
 console.log(con);
-const data = await con?.execute("select temp, hum, lpg, co, smoke, pressure, alt ,readed_at from readings order by readed_at desc limit 1");
+const data = await con?.execute("select temp, hum, pressure, alt ,readed_at from readings order by readed_at desc limit 1");
 const rows = data?.rows;
-if (rows && rows[0] && rows[0]["0"] && rows[0]["1"] && rows[0]["2"] && rows[0]["3"] && rows[0]["4"] && rows[0]["5"] && rows[0]["6"]) {
+if (rows && rows[0] && rows[0]["0"] && rows[0]["1"] && rows[0]["2"] && rows[0]["3"]) {
   const temp = rows[0]["0"].toString()
   const humidity = rows[0]["1"].toString();
-  const lpg = rows[0]["2"].toString();
-  const co = rows[0]["3"].toString();
-  const smoke = rows[0]["4"].toString();
-  const pressure = rows[0]["5"].toString();
-  const alt = rows[0]["6"].toString();
+  const pressure = rows[0]["2"].toString();
+  const alt = rows[0]["3"].toString();
+
 
   if (temp && humidity) {
     latestSensorData = {
       temp: parseFloat(temp),
       humidity: parseFloat(humidity),
-      lpg: parseFloat(lpg),
-      co: parseFloat(co),
-      smoke: parseFloat(smoke),
       pressure: parseFloat(pressure),
       alt: parseFloat(alt),
     };
@@ -137,9 +129,6 @@ export default {
         if (
           typeof data.temp === "number" &&
           typeof data.humidity === "number" &&
-          typeof data.lpg === "number" &&
-          typeof data.co === "number" &&
-          typeof data.smoke === "number" &&
           typeof data.pressure === "number" &&
           typeof data.alt === "number"
         ) {
@@ -147,13 +136,10 @@ export default {
           latestSensorData = {
             temp: data.temp,
             humidity: data.humidity,
-            lpg: data.lpg,
-            co: data.co,
-            smoke: data.smoke,
             pressure: data.pressure,
             alt: data.alt,
           };
-          await con?.execute({ sql: "insert into readings (temp, hum, lpg, co, smoke, pressure, alt)  values(?, ?, ?, ?, ?, ?, ?)", args: [latestSensorData.temp, latestSensorData.humidity, latestSensorData.lpg, latestSensorData.co, latestSensorData.smoke, latestSensorData.pressure, latestSensorData.alt] });
+          await con?.execute({ sql: "insert into readings (temp, hum, pressure, alt)  values(?, ?, ?, ?)", args: [latestSensorData.temp, latestSensorData.humidity, latestSensorData.pressure, latestSensorData.alt] });
 
 
           console.log("Updated sensor data:", latestSensorData);

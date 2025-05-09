@@ -5,9 +5,6 @@ import SensorCard from "./SensorCard.tsx";
 interface SensorData {
   temp: number,
   humidity: number,
-  lpg: number,
-  co: number,
-  smoke: number,
   pressure: number,
   alt: number,
 }
@@ -17,9 +14,6 @@ function App() {
   const [sensorData, setSensorData] = useState<SensorData>({
     temp: 0.0,
     humidity: 0.0,
-    lpg: 0.0,
-    co: 0.0,
-    smoke: 0.0,
     pressure: 0.0,
     alt: 0.0,
   });
