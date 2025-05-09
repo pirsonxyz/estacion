@@ -75,7 +75,18 @@ export default {
 
     let response: Response;
 
-
+    if (pathname === "/favicon.ico" && method === "GET") {
+      const icon = Bun.file("public/favicon.ico");
+      if (!await icon.exists()) {
+        console.warn("Icon file in public/favicon.ico not found!");
+        return new Response("Favicon not found", { status: 404 });
+      }
+      return new Response(icon, {
+        headers: {
+          "content-type": "image/x-icon",
+        }
+      });
+    }
     if (pathname === "/api/sensor-update" && method === "POST") {
 
       if (!UPLOAD_SECRET_TOKEN) {
