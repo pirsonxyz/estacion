@@ -26,6 +26,7 @@ COPY --from=builder /app/node_modules ./node_modules
 # Copy the frontend build output (dist directory)
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/favicon.ico ./favicon.ico
+COPY --from=builder /app/icon.png ./icon.png
 # Copy the main HTML file and any other static assets needed at runtime
 COPY --from=builder /app/index.html ./index.html
 # If you have other static assets (images, etc.) in a 'public' folder:

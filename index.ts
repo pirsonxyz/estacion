@@ -83,6 +83,18 @@ export default {
       }
       return new Response(icon, {
         headers: {
+          "content-type": "image/png",
+        }
+      });
+    }
+    if (pathname === "/icon" && method === "GET") {
+      const icon = Bun.file("icon.png");
+      if (!await icon.exists()) {
+        console.warn("Icon file in public/favicon.ico not found!");
+        return new Response("Favicon not found", { status: 404 });
+      }
+      return new Response(icon, {
+        headers: {
           "content-type": "image/x-icon",
         }
       });
