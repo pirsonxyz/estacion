@@ -33,6 +33,11 @@ let latestSensorData = {
   alt: 0.0
 };
 
+let stats = {
+  maxTemp24h: 0.0,
+  minTemp24h: 0.0,
+};
+
 const con = await create_con();
 console.log(con);
 const data = await con?.execute("select temp, hum, pressure, alt ,readed_at from readings order by readed_at desc limit 1");
@@ -197,6 +202,26 @@ export default {
         headers: { "Content-Type": "application/json" },
       });
     }
+    else if (pathname === "/api/stats" && method === "GET") {
+      console.log("Handling GET /api/latest");
+      const con = await create_con();
+
+      const temp_stats = await con?.execute("SELECT MAX(temp), MIN(temp) FROM readings WHERE readed_at >= DATETIME('now', '-24 hours')");
+      if (temp_stats) {
+        const rows = temp_stats?.rows;
+        if (rows[0] && rows[0]["0"] && rows[0]["1"]) {
+          stats = {
+            maxTemp24h: parseFloat(rows[0]["0"].toString()),
+            minTemp24h: parseFloat(rows[0]["1"].toString()),
+          };
+        }
+        return new Response(JSON.stringify(stats), {
+          headers: { "Content-Type": "application/json" },
+          status: 200,
+        });
+      }
+
+    }
     else if (pathname === "/" && method === "GET") {
       const htmlPath = path.join(import.meta.dir, "index.html");
       console.log(`Serving HTML: ${htmlPath}`);
@@ -254,5 +279,5 @@ export default {
 } satisfies Serve;
 
 console.log(
-  `Bun server configured with CORS origin: ${allowedOrigin}. Listening on http://0.0.0.0:3000`,
+  `Bun server configured with CORS origin: ${allowedOrigin}. Listening on :3000`,
 );

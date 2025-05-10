@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as HI from "heat-index";
 import SensorCard from "./SensorCard.tsx";
+import StatisticsSection from "./StatisticsSection";
 
 interface SensorData {
   temp: number,
@@ -80,6 +81,7 @@ function App() {
     const intervalId = setInterval(fetchData, 10000);
     return () => clearInterval(intervalId);
   }, []);
+
 
   // Heat index calculation
   const heatIndexValue =
@@ -184,6 +186,7 @@ function App() {
           </>
         )}
       </div>
+      <StatisticsSection />
     </div>
   );
 }

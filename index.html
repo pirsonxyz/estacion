@@ -348,6 +348,199 @@
       animation: pulse 1s infinite;
     }
 
+    /* --- Statistics Section --- */
+    .statistics-section {
+      margin-top: calc(var(--gap-size) * 1.5);
+      /* Space above the statistics section */
+      padding: 20px;
+      background-color: var(--header-bg);
+      /* Or var(--card-bg-color) if you prefer */
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      margin-bottom: var(--gap-size);
+      /* Space below the section */
+    }
+
+    .statistics-section .section-title {
+      font-family: var(--mono-font);
+      font-size: 1.4rem;
+      color: var(--heading-color);
+      margin-top: 0;
+      margin-bottom: 25px;
+      /* Increased bottom margin */
+      padding-bottom: 15px;
+      /* Increased padding */
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+    }
+
+    .statistics-section .section-title i {
+      color: var(--primary-accent);
+      margin-right: 12px;
+      font-size: 1.2em;
+      /* Relative to section-title font-size */
+    }
+
+    .statistics-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--gap-size);
+      justify-content: flex-start;
+    }
+
+    .statistic-card {
+      background: var(--card-bg-color);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      color: var(--text-color);
+      transition:
+        transform 0.2s ease-in-out,
+        box-shadow 0.2s ease-in-out,
+        background-color 0.3s ease;
+      flex-grow: 1;
+      flex-shrink: 1;
+      /* Default: 3 columns, similar to .reading cards */
+      flex-basis: calc(33.333% - (var(--gap-size) * 2 / 3));
+      min-width: 200px;
+      /* Minimum width before wrapping */
+      display: flex;
+      /* Added for better internal alignment */
+      flex-direction: column;
+      /* Stack header and value vertically */
+      justify-content: space-between;
+      /* Push value to bottom if cards have varying text length */
+    }
+
+    .statistic-card:hover {
+      transform: translateY(-4px);
+      /* Slightly more lift */
+      box-shadow: var(--card-hover-shadow);
+    }
+
+    .statistic-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .statistic-header i {
+      font-size: 1.3em;
+      /* Icon size */
+      color: var(--primary-accent);
+      margin-right: 10px;
+      width: 28px;
+      /* Fixed width for icon alignment */
+      text-align: center;
+    }
+
+    .statistic-card h3 {
+      margin: 0;
+      font-family: var(--mono-font);
+      font-size: 0.9em;
+      /* Title size in card */
+      font-weight: 600;
+      color: var(--heading-color);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      line-height: 1.3;
+      /* Ensure text wraps nicely */
+    }
+
+    .statistic-value {
+      font-family: var(--mono-font);
+      font-size: 1.9em;
+      /* Value size */
+      font-weight: 700;
+      margin: 10px 0 0 0;
+      /* Added top margin */
+      color: var(--value-color);
+      text-align: right;
+      line-height: 1.1;
+    }
+
+    .statistic-unit {
+      font-size: 0.55em;
+      /* Unit size relative to value */
+      font-weight: 500;
+      color: var(--unit-color);
+      margin-left: 5px;
+      text-transform: none;
+      /* Ensure units are not uppercase if value is */
+    }
+
+    /* --- Responsive Adjustments for Statistics Section --- */
+
+    /* Larger tablets / Small desktops (matches .reading card behavior) */
+    @media (max-width: 1200px) {
+      .statistic-card {
+        /* Already 3 columns by default, this matches .reading */
+        /* If you want 2 columns here, change flex-basis: */
+        /* flex-basis: calc(50% - (var(--gap-size) * 1 / 2)); */
+      }
+    }
+
+    /* Tablets (matches .reading card behavior) */
+    @media (max-width: 860px) {
+      .statistic-card {
+        flex-basis: calc(50% - (var(--gap-size) * 1 / 2));
+        /* 2 columns */
+      }
+
+      .statistic-value {
+        font-size: 1.8em;
+      }
+    }
+
+    /* Small tablets / Large phones (matches .reading card behavior) */
+    @media (max-width: 650px) {
+      .statistics-section {
+        padding: 15px;
+      }
+
+      .statistics-section .section-title {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+      }
+
+      .statistics-grid {
+        gap: 15px;
+        /* Reduced gap for statistic cards */
+      }
+
+      .statistic-card {
+        flex-basis: 100%;
+        /* 1 column */
+        padding: 15px;
+      }
+
+      .statistic-value {
+        font-size: 1.7em;
+      }
+    }
+
+    /* Small phones */
+    @media (max-width: 400px) {
+      .statistics-section .section-title {
+        font-size: 1.2rem;
+      }
+
+      .statistic-card h3 {
+        font-size: 0.85em;
+      }
+
+      .statistic-header i {
+        font-size: 1.2em;
+        margin-right: 8px;
+      }
+
+      .statistic-value {
+        font-size: 1.6em;
+      }
+    }
+
     /* Value update animation */
     .value-updated {
       animation: highlight 1s ease;
