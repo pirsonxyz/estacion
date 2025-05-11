@@ -5,15 +5,15 @@ import React, { useEffect, useState } from "react";
 // In a real application, you would fetch or calculate this data
 // For now, we'll use placeholders.
 interface StatisticsData {
-  maxTemp24h: number,
-  minTemp24h: number,
-  //   avgHumidity24h: number | string;
+  maxTemp24h: number;
+  minTemp24h: number;
+  avgHum24h: number;
   //   maxWind24h: number | string;
   //   // Add other stats as needed
 }
 
 const StatisticsSection: React.FC = () => {
-  const [statsData, setStatsData] = useState<StatisticsData>({ maxTemp24h: 0.0, minTemp24h: 0.0 });
+  const [statsData, setStatsData] = useState<StatisticsData>({ maxTemp24h: 0.0, minTemp24h: 0.0, avgHum24h: 0.0 });
   const [isLoadingStats, setIsLoadingStats] = useState(true);
   const [errorStats, setErrorStats] = useState<string | null>(null);
 
@@ -86,6 +86,12 @@ const StatisticsSection: React.FC = () => {
           title="Temperatura Mín. (24h)"
           value={statsData.minTemp24h} // Replace with actual data: statsData?.minTemp24h ?? '--'
           unit="°C"
+        />
+        <StatisticCard
+          iconClass="fas fa-tin"
+          title="Humedad promedio (24h)"
+          value={statsData.avgHum24h.toFixed(2)} // Replace with actual data: statsData?.minTemp24h ?? '--'
+          unit="%"
         />
         {/* You can add more StatisticCard components here for other stats */}
         {/* For example:

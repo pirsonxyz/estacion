@@ -6,7 +6,5 @@ const con = createClient({
 });
 
 const rows_n = await con.execute("select count(*) from readings");
-const rows = parseInt(rows_n.rows[0]["0"])
-const max = await con.execute("SELECT MAX(temp), MIN(temp) FROM readings WHERE readed_at >= DATETIME('now', '-24 hours')");
-console.log(max);
+const rows = parseInt(rows_n.rows[0]["0"]);
 console.log(`🛫 There are ${rows} rows and ${rows * 4} meteorological readings!`)

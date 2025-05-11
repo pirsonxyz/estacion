@@ -36,6 +36,7 @@ let latestSensorData = {
 let stats = {
   maxTemp24h: 0.0,
   minTemp24h: 0.0,
+  avgHum24h: 0.0,
 };
 
 const con = await create_con();
@@ -207,12 +208,22 @@ export default {
       const con = await create_con();
 
       const temp_stats = await con?.execute("SELECT MAX(temp), MIN(temp) FROM readings WHERE readed_at >= DATETIME('now', '-24 hours')");
+      const num_hum = await con?.execute("SELECT hum FROM readings WHERE readed_at >= DATETIME('now', '-24 hours')");
+      let acc = 0;
+      if (num_hum) {
+        for (let i = 0; i < num_hum?.rows.length; i++) {
+          acc += num_hum.rows[i]["0"];
+        }
+      }
+      const prom = acc / num_hum?.rows.length;
+
       if (temp_stats) {
         const rows = temp_stats?.rows;
         if (rows[0] && rows[0]["0"] && rows[0]["1"]) {
           stats = {
             maxTemp24h: parseFloat(rows[0]["0"].toString()),
             minTemp24h: parseFloat(rows[0]["1"].toString()),
+            avgHum24h: prom
           };
         }
         return new Response(JSON.stringify(stats), {
