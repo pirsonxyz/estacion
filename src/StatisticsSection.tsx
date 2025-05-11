@@ -78,19 +78,19 @@ const StatisticsSection: React.FC = () => {
         <StatisticCard
           iconClass="fas fa-temperature-high"
           title="Temperatura Máx. (24h)"
-          value={statsData.maxTemp24h} // Replace with actual data: statsData?.maxTemp24h ?? '--'
+          value={statsData.maxTemp24h}
           unit="°C"
         />
         <StatisticCard
           iconClass="fas fa-temperature-low"
           title="Temperatura Mín. (24h)"
-          value={statsData.minTemp24h} // Replace with actual data: statsData?.minTemp24h ?? '--'
+          value={statsData.minTemp24h}
           unit="°C"
         />
         <StatisticCard
           iconClass="fas fa-tin"
           title="Humedad promedio (24h)"
-          value={statsData.avgHum24h.toFixed(2)} // Replace with actual data: statsData?.minTemp24h ?? '--'
+          value={statsData.avgHum24h.toFixed(2)}
           unit="%"
         />
         {/* You can add more StatisticCard components here for other stats */}
