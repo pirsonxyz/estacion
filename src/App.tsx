@@ -176,13 +176,6 @@ function App() {
               unit="hPa"
               isRefreshing={isRefreshing}
             ></SensorCard>
-            <SensorCard
-              iconClass="fa-solid fa-up-long"
-              title="Altura sobre el nivel del mar"
-              value={sensorData.alt}
-              unit="m"
-              isRefreshing={isRefreshing}
-            ></SensorCard>
           </>
         )}
       </div>
