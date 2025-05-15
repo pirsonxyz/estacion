@@ -7,7 +7,6 @@ interface SensorData {
   temp: number,
   humidity: number,
   pressure: number,
-  alt: number,
 }
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
     temp: 0.0,
     humidity: 0.0,
     pressure: 0.0,
-    alt: 0.0,
   });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true); // Initial load

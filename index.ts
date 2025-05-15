@@ -30,7 +30,6 @@ let latestSensorData = {
   temp: 0.0,
   humidity: 0.0,
   pressure: 0.0,
-  alt: 0.0
 };
 
 let stats = {
@@ -41,13 +40,12 @@ let stats = {
 
 const con = await create_con();
 console.log(con);
-const data = await con?.execute("select temp, hum, pressure, alt ,readed_at from readings order by readed_at desc limit 1");
+const data = await con?.execute("select temp, hum, pressure, readed_at from readings order by readed_at desc limit 1");
 const rows = data?.rows;
 if (rows && rows[0] && rows[0]["0"] && rows[0]["1"] && rows[0]["2"] && rows[0]["3"]) {
   const temp = rows[0]["0"].toString()
   const humidity = rows[0]["1"].toString();
   const pressure = rows[0]["2"].toString();
-  const alt = rows[0]["3"].toString();
 
 
   if (temp && humidity) {
@@ -55,7 +53,6 @@ if (rows && rows[0] && rows[0]["0"] && rows[0]["1"] && rows[0]["2"] && rows[0]["
       temp: parseFloat(temp),
       humidity: parseFloat(humidity),
       pressure: parseFloat(pressure),
-      alt: parseFloat(alt),
     };
   }
 }
@@ -158,17 +155,15 @@ export default {
         if (
           typeof data.temp === "number" &&
           typeof data.humidity === "number" &&
-          typeof data.pressure === "number" &&
-          typeof data.alt === "number"
+          typeof data.pressure === "number"
         ) {
 
           latestSensorData = {
             temp: data.temp,
             humidity: data.humidity,
             pressure: data.pressure,
-            alt: data.alt,
           };
-          await con?.execute({ sql: "insert into readings (temp, hum, pressure, alt)  values(?, ?, ?, ?)", args: [latestSensorData.temp, latestSensorData.humidity, latestSensorData.pressure, latestSensorData.alt] });
+          await con?.execute({ sql: "insert into readings (temp, hum, pressure)  values(?, ?, ?)", args: [latestSensorData.temp, latestSensorData.humidity, latestSensorData.pressure] });
 
 
           console.log("Updated sensor data:", latestSensorData);
