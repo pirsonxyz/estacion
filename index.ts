@@ -208,14 +208,9 @@ export default {
       const con = await create_con();
 
       const temp_stats = await con?.execute("SELECT MAX(temp), MIN(temp) FROM readings WHERE readed_at >= DATETIME('now', '-24 hours')");
-      const num_hum = await con?.execute("SELECT hum FROM readings WHERE readed_at >= DATETIME('now', '-24 hours')");
-      let acc = 0;
-      if (num_hum) {
-        for (let i = 0; i < num_hum?.rows.length; i++) {
-          acc += num_hum.rows[i]["0"];
-        }
-      }
-      const prom = acc / num_hum?.rows.length;
+      const num_hum = await con?.execute("SELECT AVG(hum) FROM readings WHERE readed_at >= DATETIME('now', '-24 hours')");
+
+      const prom = parseFloat(num_hum?.rows[0]["0"]?.toString() || "0");
 
       if (temp_stats) {
         const rows = temp_stats?.rows;
