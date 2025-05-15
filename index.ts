@@ -204,7 +204,7 @@ export default {
       });
     }
     else if (pathname === "/api/stats" && method === "GET") {
-      console.log("Handling GET /api/latest");
+      console.log("Handling GET /api/stats");
       const con = await create_con();
 
       const temp_stats = await con?.execute("SELECT MAX(temp), MIN(temp) FROM readings WHERE readed_at >= DATETIME('now', '-24 hours')");
