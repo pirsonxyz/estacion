@@ -207,8 +207,8 @@ export default {
       console.log("Handling GET /api/stats");
       const con = await create_con();
 
-      const temp_stats = await con?.execute("SELECT MAX(temp), MIN(temp) FROM readings WHERE readed_at >= DATETIME('now', '-24 hours')");
-      const num_hum = await con?.execute("SELECT AVG(hum) FROM readings WHERE readed_at >= DATETIME('now', '-24 hours')");
+      const temp_stats = await con?.execute("select max(temp), min(temp) from readings where readed_at >= datetime('now', '-24 hours')");
+      const num_hum = await con?.execute("select avg(hum) from readings where readed_at >= datetime('now', '-24 hours')");
 
       const prom = parseFloat(num_hum?.rows[0]["0"]?.toString() || "0");
 
