@@ -21,6 +21,7 @@ const StatisticsSection: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("fetching stats...");
         setErrorStats(null);
         if (!isLoadingStats) {
           setIsLoadingStats(true);
